@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper:根标签，namespace：命名空间，随便写，一般保证命名空间唯一 -->
+<mapper namespace="com.sun.dao.UserDao">  <!-- dao接口路径 -->
+   <!-- statement，内容：sql语句。id：唯一标识，随便写，在同一个命名空间下保持唯一
+      resultType：sql语句查询结果集的封装类型,tb_user即为数据库中的表
+    -->
+    <!-- id 要和 dao里一样  -->
+    
+   <select id="getById"  resultType="com.sun.model.User">
+      select * from t_user01 where id = #{id}
+   </select>
+   <select id="selectAll" resultType="com.sun.model.User">
+      select * from t_user01 
+   </select>
+   <select id="get" resultType="com.sun.model.User">
+      select * from ${tableName}
+   </select>
+   
+   <delete id="del">
+   	  delete from t_user01 where id = #{id}
+   </delete>
+   <insert id="insertU"  parameterType="com.sun.model.User">
+      insert into t_user01 values(null,#{username},#{password},#{sex},#{birthday},now())
+   </insert>
+   <update id="updateU"  parameterType="com.sun.model.User">
+   	  update t_user01 set username = #{username} , password = #{password} ,
+		              sex = #{sex} , birthday = #{birthday} where id = #{id}
+   </update>
+   
+   <select id="find" parameterType="user" resultType="user">
+     	  select * from t_user02  
+     	 
+     	   <include refid="usesql" />
+     	 
+  </select>
+  
+  <sql id="usesql">
+     		  <where>
+     	  		
+  	  		<if test="username != null and username != ''">
+     	  		and username = #{username}
+     	  </if>
+     	  <if test="sex != 0">
+     	  		and sex = #{sex}
+     	  </if>
+   	  
+     	  </where> 
+     </sql>
+   
+</mapper>
